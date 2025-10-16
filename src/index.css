@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+@import "bootstrap-icons/font/bootstrap-icons";
+
+@import "tailwindcss";
+
+html {
+  font-size: 12px;
+  min-height: 100%;
+}
+
+body * {
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background:  #f9f9fc
+}
+
+
+
+
+.espacio-boton .p-button .p-button-label {
+  font-weight: 200 !important;
+}
+
+/* === Tabla - configuracion === */
+.p-sortable-column-icon {
+  display: none;
+}
+
+ .p-datatable-thead th {
+  color: #8a8a8a;
+  font-weight: 400;
+}
+
+/* === Tabla Sensores === */
+
+.tabla-sensores .p-datatable-tbody tr td:nth-child(1),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(4),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(6),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(8) {
+  color: #000000;
+  font-weight: 500;
+}
+
+.tabla-sensores .p-datatable-tbody tr td:nth-child(2),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(3),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(5),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(9) {
+  color: #8a8a8a;
+  font-weight: 400;
+}
+
+
+
+/* Tabla dashboard */
+
+.tabla-dashboard .p-datatable-tbody tr td:nth-child(1), 
+.tabla-dashboard .p-datatable-tbody tr td:nth-child(2) {
+  color: #000000;
+  font-weight: 500;
+}
+.tabla-dashboard .p-datatable-tbody tr td:nth-child(3),
+.tabla-dashboard .p-datatable-tbody tr td:nth-child(5) {
+  color: #8a8a8a;
+  font-weight: 400;
+}
+
+
+/* === Tabla Lecturas === */
+.tabla-lecturas .p-datatable-tbody tr td:nth-child(2),
+.tabla-lecturas .p-datatable-tbody tr td:nth-child(4) {
+  color: #000000;
+  font-weight: 500;
+}
+.tabla-lecturas .p-datatable-tbody tr td:nth-child(1),
+.tabla-lecturas .p-datatable-tbody tr td:nth-child(3),
+.tabla-lecturas .p-datatable-tbody tr td:nth-child(5) {
+  color: #8a8a8a;
+  font-weight: 400;
+}
+
+/* === Tabla Promedios === */
+.tabla-promedios .p-datatable-tbody tr td:nth-child(1),
+.tabla-promedios .p-datatable-tbody tr td:nth-child(3),
+.tabla-promedios .p-datatable-tbody tr td:nth-child(4),
+.tabla-promedios .p-datatable-tbody tr td:nth-child(5),
+.tabla-promedios .p-datatable-tbody tr td:nth-child(6),
+.tabla-promedios .p-datatable-tbody tr td:nth-child(7),
+.tabla-promedios .p-datatable-tbody tr td:nth-child(8) {
+  color: #000000;
+  font-weight: 500;
+}
+
+.tabla-promedios .p-datatable-tbody tr td:nth-child(2) {
+  color: #8a8a8a;
+  font-weight: 400;
+}
+ 
+/* Sidebar: forzar el menu a ocupar todo el alto y pegar el footer abajo */
+.p-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Los items del menu deben distribuirse en columna */
+.sidebar-menu .p-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Los items del menu deben distribuirse en columna */
+.sidebar-menu .p-menu-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+/* Item especial que se colocará al final */
+.sidebar-menu .p-menu-list > li.menu-footer {
+  margin-top: auto; /* empuja el item al final */
+}
+
+.sidebar-menu .p-menuitem-link,
+.sidebar-menu .p-menuitem {
+  cursor: pointer;
+}
+
+/* Espacio pequeño después del separador principal */
+.sidebar-menu .p-menu-list > li.after-separator {
+  margin-top: 0.5rem;
+}
