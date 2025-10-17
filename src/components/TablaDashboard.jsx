@@ -75,7 +75,7 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
   // Crear grafico
   const graficoRecharts = (
     datosRecharts.length > 0 ? (
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={270}>
         <LineChart data={datosRecharts}>
           <CartesianGrid stroke="#eee" strokeDasharray="" />
           <XAxis

@@ -141,7 +141,8 @@ function TablaSensores({ consulta, setSensorId, setSensorNombre, setSensorIdenti
             {/* inferior */}
             <div>
                 <Card
-                    title={`${sensorNombre}`}
+                    title={<div >Sensores</div>}
+                    subTitle={`${sensorNombre}`}
                 >
                     <DataTable
                         className="tabla-sensores"
@@ -150,7 +151,7 @@ function TablaSensores({ consulta, setSensorId, setSensorNombre, setSensorIdenti
                         selectionMode="single"
                         /* paginator rows={10} */
                         scrollable
-                        scrollHeight="18.75rem"
+                        scrollHeight="30rem"
                         selection={filaSeleccionada}
                         globalFilter={value}
                         onSelectionChange={(e) => setFilaSeleccionada(e.value)}

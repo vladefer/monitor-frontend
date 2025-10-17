@@ -1,6 +1,4 @@
-import React from "react";
 import { Menu } from "primereact/menu";
-import { Avatar } from "primereact/avatar";
 import { Badge } from "primereact/badge";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
@@ -10,18 +8,17 @@ export default function NavegacionLateral() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
-
     const itemRenderer = (item) => (
         <div className="p-menuitem-content">
             <a
-                className="flex items-center p-menuitem-link text-gray-800 hover:bg-gray-100 rounded-md"
+                className="p-menuitem-link"
                 onClick={item.command}
                 role="button"
                 tabIndex={0}
                 aria-label={item.label}
             >
-                <i className={`${item.icon} text-primary text-lg`} />
-                <span className="ml-5">{item.label}</span>
+                <i className={`${item.icon}`} style={{ fontSize: '1.3rem' }} />
+                <span className="ml-8 p-2">{item.label}</span>
                 {item.badge && (
                     <Badge className="ml-auto" value={item.badge} severity="info" />
                 )}
@@ -33,7 +30,7 @@ export default function NavegacionLateral() {
     const items = [
         {
             template: () => (
-                <div className="flex items-center gap-2 py-[8px] px-2">
+                <div className="flex items-center gap-2 py-[7.5px] px-3">
                     <img
                         src="/img/logo.png"
                         alt="Logo"
@@ -82,16 +79,18 @@ export default function NavegacionLateral() {
         {
             className: "menu-footer",
             template: () => (
-                <div className="pt-3 border-t border-gray-200">
+                <div className="pt-2 border-t border-gray-200">
                     <button
                         onClick={logout}
-                        className={classNames(
-                            "w-full flex items-center gap-2 p-2 pl-4 text-gray-800 hover:bg-gray-100 rounded-md"
-                        )}
+                        className={classNames("w-full flex items-center text-gray-800 hover:bg-gray-100 rounded-md py-2")}
                     >
-                        <div className="flex flex-col text-left ml-2">
-                            <span className="font-bold">{user?.name || "Usuario"}</span>
-                            <span className="text-lg text-gray-500">Cerrar sesión</span>
+                        <div className="flex items-center gap-8 pl-6 w-full">
+                            <i className="pi pi-sign-out" style={{ fontSize: '1.5rem'}}></i>
+                            <div className="flex flex-col items-start">
+                                <div className="font-bold">Usuario</div>
+                                <div>Cerrar sesión</div>
+                            </div>
+
                         </div>
                     </button>
                 </div>
@@ -102,9 +101,8 @@ export default function NavegacionLateral() {
     return (
         <div className="sidebar-menu">
             <Menu
-
                 model={items}
-                style={{ fontSize: "1.2rem", width: "18rem", height: "100vh", borderRadius: "0rem", borderTop: "none" }}
+                style={{ fontSize: "1.2rem", width: "18rem", height: "100vh", borderRadius: "0rem", borderTop: "none", }}
             />
         </div>
     );
