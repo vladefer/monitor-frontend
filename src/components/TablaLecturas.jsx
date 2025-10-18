@@ -10,7 +10,7 @@ import dayjs from "dayjs"
 import { jsPDF } from 'jspdf'
 import { autoTable } from 'jspdf-autotable'
 
-function TablaLecturas({ consulta, lecturasFechaInicio, setLecturasFechaInicio, lecturasFechaFin, setLecturasFechaFin, sensorMin, sensorMax, sensorTipo, sensorNombre, refetch, isFetching, user }) {
+function TablaLecturas({ consulta, lecturasFechaInicio, setLecturasFechaInicio, lecturasFechaFin, setLecturasFechaFin, sensorIdentificador, sensorMin, sensorMax, sensorTipo, sensorNombre, refetch, isFetching, user }) {
 
     // Agregar estado a la lectura del sensor asignado
     const getEstadoLectura = (rowData) => {
@@ -35,18 +35,33 @@ function TablaLecturas({ consulta, lecturasFechaInicio, setLecturasFechaInicio, 
     const exportarPDF = async () => {
         const doc = new jsPDF()
 
-        const logoData = await convertirImagen("img/logo-marca.png")
-        doc.addImage(logoData, 'PNG', 14, 5, 16, 10)
+        /* const logoData = await convertirImagen("img/logo.png")
+        doc.addImage(logoData, 'PNG', 14, 8, 60, 10) */
 
-        // Agregar informacion
         doc.setFont("helvetica", "normal")
-        doc.setFontSize(11)
+        doc.setFontSize(10)
         doc.setTextColor(50)
-        doc.text(`Cliente: ${user.cliente_nombre}`, 14, 30)
-        doc.text(`Nombre: ${sensorNombre}`, 14, 35)
-        doc.text(`Rango: ${sensorMin} ${sensorTipo === 1 ? "°C" : "%"} a ${sensorMax} ${sensorTipo === 1 ? "°C" : "%"}`, 14, 40)
-        doc.text(`Fecha inicio: ${dayjs(lecturasFechaInicio).format("DD/MM/YYYY")}`, 14, 45)
-        doc.text(`Fecha Fin: ${dayjs(lecturasFechaFin).format("DD/MM/YYYY")}`, 14, 50)
+        doc.text(`Tecnometry monitor-app`, 14, 20)
+        doc.text(`Señores`, 14, 29)
+
+        doc.setFont("helvetica", "bold")
+        doc.text(user.cliente_nombre, doc.getTextWidth("Señores ") + 14, 29)
+
+        doc.setFont("helvetica", "normal")
+        doc.text(`Este informe corresponde al registro de lecturas de acuerdo al rango de fecha seleccionado.`, 14, 35)
+
+        doc.setFont("helvetica", "normal")
+        doc.text("Nombre:", 14, 45)
+
+        doc.setFont("helvetica", "bold")
+        doc.text(sensorNombre, 14 + doc.getTextWidth("Nombre: "), 45)
+
+        doc.setFont("helvetica", "normal")
+        doc.text(`Serial: ${sensorIdentificador}`, 14, 50)
+
+        doc.text(`Rango: ${sensorMin} ${sensorTipo === 1 ? "°C" : "%"} a ${sensorMax} ${sensorTipo === 1 ? "°C" : "%"}`, 14, 55)
+
+        doc.text(`Fecha: ${dayjs(lecturasFechaInicio).format("DD/MM/YYYY")} hasta ${dayjs(lecturasFechaFin).format("DD/MM/YYYY")}`, 14, 60)
 
         const datos = consulta.map(row => [
             row.sensor_nombre,
@@ -60,10 +75,10 @@ function TablaLecturas({ consulta, lecturasFechaInicio, setLecturasFechaInicio, 
 
         autoTable(doc, {
             margin: { top: 30, bottom: 35 },
-            startY: 60,
+            startY: 70,
             head: [columnas],
             body: datos,
-
+            styles: { fontSize: 8 },
             didDrawPage: function (data) {
                 const pageHeight = doc.internal.pageSize.height
                 const pageWidth = doc.internal.pageSize.width
@@ -76,7 +91,7 @@ function TablaLecturas({ consulta, lecturasFechaInicio, setLecturasFechaInicio, 
                     "Elaborado por: Tecnometry",
                     "Teléfono: 3028699819",
                     "Correo: admin@tecnometry.com",
-                    "https://tecnometry.com"
+                    "https://monitor-app.cloud"
                 ]
 
                 let y = pageHeight - 25
@@ -86,15 +101,10 @@ function TablaLecturas({ consulta, lecturasFechaInicio, setLecturasFechaInicio, 
                 })
 
                 doc.text(`Página ${pageNumber}`, pageWidth - 40, pageHeight - 10)
-
-                if (logoData) {
-                    doc.addImage(logoData, 'PNG', 14, 5, 16, 10)
-                }
-
                 doc.setFont("helvetica", "bold")
                 doc.setFontSize(14)
                 doc.setTextColor(41, 128, 185)
-                doc.text("Reporte de Lecturas", 14, 22)
+                doc.text("Reporte de Lecturas", 14, 15)
             }
         })
         doc.save("Reporte_lecturas.pdf")

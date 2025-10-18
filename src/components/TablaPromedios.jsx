@@ -10,7 +10,7 @@ import dayjs from "dayjs"
 import { jsPDF } from 'jspdf'
 import { autoTable } from 'jspdf-autotable'
 
-function TablaPromedios({ consulta, promediosFechaInicio, setPromediosFechaInicio, promediosFechaFin, setPromediosFechaFin, sensorTipo, sensorNombre, sensorMin, sensorMax, refetch, isFetching, user }) {
+function TablaPromedios({ consulta, promediosFechaInicio, setPromediosFechaInicio, promediosFechaFin, setPromediosFechaFin, sensorIdentificador, sensorTipo, sensorNombre, sensorMin, sensorMax, refetch, isFetching, user }) {
 
     // Agregar unidad de medida a lecturas dependiendo del tipo de sensor
     const unidadMedida = (rowData, field) => {
@@ -23,18 +23,33 @@ function TablaPromedios({ consulta, promediosFechaInicio, setPromediosFechaInici
     const exportarPDF = async () => {
         const doc = new jsPDF()
 
-        const logoData = await convertirImagen("img/logo-marca.png")
-        doc.addImage(logoData, 'PNG', 14, 5, 16, 10)
+        /* const logoData = await convertirImagen("img/logo.png")
+        doc.addImage(logoData, 'PNG', 14, 8, 60, 10) */
 
-        // Agregar informacion
         doc.setFont("helvetica", "normal")
-        doc.setFontSize(11)
+        doc.setFontSize(10)
         doc.setTextColor(50)
-        doc.text(`Cliente: ${user.cliente_nombre}`, 14, 30)
-        doc.text(`Nombre: ${sensorNombre}`, 14, 35)
-        doc.text(`Rango: ${sensorMin} ${sensorTipo === 1 ? "°C" : "%"} a ${sensorMax} ${sensorTipo === 1 ? "°C" : "%"}`, 14, 40)
-        doc.text(`Fecha inicio: ${dayjs(promediosFechaInicio).format("DD/MM/YYYY")}`, 14, 45)
-        doc.text(`Fecha Fin: ${dayjs(promediosFechaFin).format("DD/MM/YYYY")}`, 14, 50)
+        doc.text(`Tecnometry monitor-app`, 14, 20)
+        doc.text(`Señores`, 14, 29)
+
+        doc.setFont("helvetica", "bold")
+        doc.text(user.cliente_nombre, doc.getTextWidth("Señores ") + 14, 29)
+
+        doc.setFont("helvetica", "normal")
+        doc.text(`Este informe corresponde al promedio de 12 horas de acuerdo al rango de fecha seleccionado.`, 14, 35)
+
+        doc.setFont("helvetica", "normal")
+        doc.text("Nombre:", 14, 45)
+
+        doc.setFont("helvetica", "bold")
+        doc.text(sensorNombre, 14 + doc.getTextWidth("Nombre: "), 45)
+
+        doc.setFont("helvetica", "normal")
+        doc.text(`Serial: ${sensorIdentificador}`, 14, 50)
+
+        doc.text(`Rango: ${sensorMin} ${sensorTipo === 1 ? "°C" : "%"} a ${sensorMax} ${sensorTipo === 1 ? "°C" : "%"}`, 14, 55)
+
+        doc.text(`Fecha inicio: ${dayjs(promediosFechaInicio).format("DD/MM/YYYY")} hasta ${dayjs(promediosFechaFin).format("DD/MM/YYYY")}`, 14, 60)
 
         const datos = consulta.map(row => [
             row.sensor_nombre,
@@ -51,10 +66,10 @@ function TablaPromedios({ consulta, promediosFechaInicio, setPromediosFechaInici
 
         autoTable(doc, {
             margin: { top: 30, bottom: 35 },
-            startY: 60,
+            startY: 70,
             head: [columnas],
             body: datos,
-
+            styles: { fontSize: 8 },
             didDrawPage: function (data) {
                 const pageHeight = doc.internal.pageSize.height;
                 const pageWidth = doc.internal.pageSize.width;
@@ -67,7 +82,7 @@ function TablaPromedios({ consulta, promediosFechaInicio, setPromediosFechaInici
                     "Elaborado por: Tecnometry",
                     "Teléfono: 3028699819",
                     "Correo: admin@tecnometry.com",
-                    "https://tecnometry.com"
+                    "https://monitor-app.cloud"
                 ];
 
                 let y = pageHeight - 25
@@ -77,15 +92,10 @@ function TablaPromedios({ consulta, promediosFechaInicio, setPromediosFechaInici
                 })
 
                 doc.text(`Página ${pageNumber}`, pageWidth - 40, pageHeight - 10);
-
-                if (logoData) {
-                    doc.addImage(logoData, 'PNG', 14, 5, 16, 10);
-                }
-
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(14);
                 doc.setTextColor(41, 128, 185);
-                doc.text("Reporte de Promedios", 14, 22)
+                doc.text("Reporte de Promedios", 14, 15)
             }
         })
         doc.save("Reporte_Promedios.pdf")
@@ -107,46 +117,46 @@ function TablaPromedios({ consulta, promediosFechaInicio, setPromediosFechaInici
 
             <div style={{ display: "flex", justifyContent: "space-between" }} >
 
-            <div>
-                <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha inicio</label>
+                <div>
+                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha inicio</label>
 
-                <Calendar
-                    value={promediosFechaInicio ? dayjs(promediosFechaInicio).toDate() : null}
-                    showIcon
-                    onChange={(newValue) => setPromediosFechaInicio(dayjs(newValue.value).startOf("day").format("YYYY-MM-DD HH:mm:ss"))}
-                    placeholder="Seleccione Fecha"
-                    dateFormat="yy/mm/dd "
-                    style={{ height: '2.5rem', width: '15rem' }}
-                />
+                    <Calendar
+                        value={promediosFechaInicio ? dayjs(promediosFechaInicio).toDate() : null}
+                        showIcon
+                        onChange={(newValue) => setPromediosFechaInicio(dayjs(newValue.value).startOf("day").format("YYYY-MM-DD HH:mm:ss"))}
+                        placeholder="Seleccione Fecha"
+                        dateFormat="yy/mm/dd "
+                        style={{ height: '2.5rem', width: '15rem' }}
+                    />
 
-                <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Fecha Fin</label>
+                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Fecha Fin</label>
 
-                <Calendar
-                    value={promediosFechaFin ? dayjs(promediosFechaFin).toDate() : null}
-                    showIcon
-                    onChange={(newValue) => setPromediosFechaFin(dayjs(newValue.value).endOf("day").format("YYYY-MM-DD HH:mm:ss"))}
-                    placeholder="Seleccione Fecha"
-                    dateFormat="yy/mm/dd"
-                    style={{ height: '2.5rem', width: '15rem' }}
-                />
+                    <Calendar
+                        value={promediosFechaFin ? dayjs(promediosFechaFin).toDate() : null}
+                        showIcon
+                        onChange={(newValue) => setPromediosFechaFin(dayjs(newValue.value).endOf("day").format("YYYY-MM-DD HH:mm:ss"))}
+                        placeholder="Seleccione Fecha"
+                        dateFormat="yy/mm/dd"
+                        style={{ height: '2.5rem', width: '15rem' }}
+                    />
 
-            </div>
+                </div>
 
-            <div style={{ display: "flex", gap: "1rem" }}>
-                <Button
-                    label="PDF"
-                    icon="pi pi-download"
-                    onClick={exportarPDF}
-                    style={{ height: '2.5rem' }}
-                />
-                <Button
-                    label="Actualizar"
-                    icon="pi pi-refresh"
-                    loading={isFetching}
-                    onClick={() => refetch()}
-                    style={{ height: '2.5rem' }}
-                />
-            </div>
+                <div style={{ display: "flex", gap: "1rem" }}>
+                    <Button
+                        label="PDF"
+                        icon="pi pi-download"
+                        onClick={exportarPDF}
+                        style={{ height: '2.5rem' }}
+                    />
+                    <Button
+                        label="Actualizar"
+                        icon="pi pi-refresh"
+                        loading={isFetching}
+                        onClick={() => refetch()}
+                        style={{ height: '2.5rem' }}
+                    />
+                </div>
 
             </div>
 

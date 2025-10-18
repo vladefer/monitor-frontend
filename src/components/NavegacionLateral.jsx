@@ -2,7 +2,6 @@ import { Menu } from "primereact/menu";
 import { Badge } from "primereact/badge";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
-import { classNames } from "primereact/utils";
 
 export default function NavegacionLateral() {
     const { user, logout } = useAuth();
@@ -26,83 +25,85 @@ export default function NavegacionLateral() {
         </div>
     );
 
-    // 🔸 Menú principal
     const items = [
         {
-            template: () => (
-                <div className="flex items-center gap-2 py-[7.5px] px-3">
-                    <img
-                        src="/img/logo.png"
-                        alt="Logo"
-                    />
-                </div>
-            ),
+            label: "Home",
+            items: [
+                {
+                    label: "Dashboard",
+                    icon: "pi pi-home",
+                    command: () => navigate("/"),
+                    template: itemRenderer,
+                },
+                {
+                    label: "Lecturas",
+                    icon: "pi pi-database",
+                    command: () => navigate("/lecturas"),
+                    template: itemRenderer,
+                },
+                {
+                    label: "Promedios",
+                    icon: "pi pi-chart-line",
+                    command: () => navigate("/promedios"),
+                    template: itemRenderer,
+                },
+                {
+                    label: "Gráfico Diario",
+                    icon: "pi pi-calendar",
+                    command: () => navigate("/grafico"),
+                    template: itemRenderer,
+                },
+                {
+                    label: "Gráfico Informe",
+                    icon: "pi pi-chart-bar",
+                    command: () => navigate("/informes"),
+                    template: itemRenderer,
+                },
+                {
+                    label: "Contactos",
+                    icon: "pi pi-phone",
+                    command: () => navigate("/contactos"),
+                    template: itemRenderer,
+                },
+            ]
         },
-        { separator: true },
-        {
-            label: "Dashboard",
-            className: "after-separator",
-            icon: "pi pi-home",
-            command: () => navigate("/"),
-            template: itemRenderer,
-        },
-        {
-            label: "Lecturas",
-            icon: "pi pi-database",
-            command: () => navigate("/lecturas"),
-            template: itemRenderer,
-        },
-        {
-            label: "Promedios",
-            icon: "pi pi-chart-line",
-            command: () => navigate("/promedios"),
-            template: itemRenderer,
-        },
-        {
-            label: "Gráfico Diario",
-            icon: "pi pi-calendar",
-            command: () => navigate("/grafico"),
-            template: itemRenderer,
-        },
-        {
-            label: "Gráfico Informe",
-            icon: "pi pi-chart-bar",
-            command: () => navigate("/informes"),
-            template: itemRenderer,
-        },
-        {
-            label: "Contactos",
-            icon: "pi pi-phone",
-            command: () => navigate("/contactos"),
-            template: itemRenderer,
-        },
-        {
-            className: "menu-footer",
-            template: () => (
-                <div className="pt-2 border-t border-gray-200">
-                    <button
-                        onClick={logout}
-                        className={classNames("w-full flex items-center text-gray-800 hover:bg-gray-100 rounded-md py-2")}
-                    >
-                        <div className="flex items-center gap-8 pl-6 w-full">
-                            <i className="pi pi-sign-out" style={{ fontSize: '1.5rem'}}></i>
-                            <div className="flex flex-col items-start">
-                                <div className="font-bold">Usuario</div>
-                                <div>Cerrar sesión</div>
-                            </div>
 
-                        </div>
-                    </button>
-                </div>
-            ),
+                {
+            label: "Documentos",
+            items: [
+                {
+                    label: 'ONAC',
+                    icon: "pi pi-receipt",
+                    template: itemRenderer,
+
+                },  
+            ]
         },
+
+        {
+            separator: true
+        },
+
+        {
+            label: "Usuario",
+            items: [
+                {
+                    label: 'Cerrar Sesion',
+                    icon: "pi pi-sign-out",
+                    command: () => logout(),
+                    template: itemRenderer,
+
+                },  
+            ]
+        },
+
     ];
 
     return (
-        <div className="sidebar-menu">
+        <div >
             <Menu
                 model={items}
-                style={{ fontSize: "1.2rem", width: "18rem", height: "100vh", borderRadius: "0rem", borderTop: "none", }}
+                style={{ fontSize: "1.2rem", width: "18rem", height: "100vh", }}
             />
         </div>
     );

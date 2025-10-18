@@ -25,8 +25,6 @@ body {
 }
 
 
-
-
 .espacio-boton .p-button .p-button-label {
   font-weight: 200 !important;
 }
@@ -42,27 +40,24 @@ body {
 }
 
 /* === Tabla Sensores === */
-
 .tabla-sensores .p-datatable-tbody tr td:nth-child(1),
-.tabla-sensores .p-datatable-tbody tr td:nth-child(4),
-.tabla-sensores .p-datatable-tbody tr td:nth-child(6),
-.tabla-sensores .p-datatable-tbody tr td:nth-child(8) {
+.tabla-sensores .p-datatable-tbody tr td:nth-child(2),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(5),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(7),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(8), 
+.tabla-sensores .p-datatable-tbody tr td:nth-child(9) {
   color: #000000;
   font-weight: 500;
 }
 
-.tabla-sensores .p-datatable-tbody tr td:nth-child(2),
 .tabla-sensores .p-datatable-tbody tr td:nth-child(3),
-.tabla-sensores .p-datatable-tbody tr td:nth-child(5),
-.tabla-sensores .p-datatable-tbody tr td:nth-child(9) {
+.tabla-sensores .p-datatable-tbody tr td:nth-child(4),
+.tabla-sensores .p-datatable-tbody tr td:nth-child(6){
   color: #8a8a8a;
   font-weight: 400;
 }
 
-
-
 /* Tabla dashboard */
-
 .tabla-dashboard .p-datatable-tbody tr td:nth-child(1), 
 .tabla-dashboard .p-datatable-tbody tr td:nth-child(2) {
   color: #000000;
@@ -103,40 +98,4 @@ body {
 .tabla-promedios .p-datatable-tbody tr td:nth-child(2) {
   color: #8a8a8a;
   font-weight: 400;
-}
- 
-/* Sidebar: forzar el menu a ocupar todo el alto y pegar el footer abajo */
-.p-menu {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-/* Los items del menu deben distribuirse en columna */
-.sidebar-menu .p-menu {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-/* Los items del menu deben distribuirse en columna */
-.sidebar-menu .p-menu-list {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-}
-
-/* Item especial que se colocará al final */
-.sidebar-menu .p-menu-list > li.menu-footer {
-  margin-top: auto; /* empuja el item al final */
-}
-
-.sidebar-menu .p-menuitem-link,
-.sidebar-menu .p-menuitem {
-  cursor: pointer;
-}
-
-/* Espacio pequeño después del separador principal */
-.sidebar-menu .p-menu-list > li.after-separator {
-  margin-top: 0.5rem;
 }

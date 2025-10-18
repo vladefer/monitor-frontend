@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Menubar } from 'primereact/menubar'
 import { Avatar } from 'primereact/avatar'
 import logoLocal from '../assets/perfil.png'
@@ -27,7 +27,7 @@ function Navbar() {
     { label: 'Gráfico Diario', command: () => navigate('/grafico') },
     { label: 'Gráfico Informe', command: () => navigate('/informes') },
     { label: 'Contactos', command: () => navigate('/contactos') },
-    { label: 'Cerrar sesion', command: () => logout()},
+    { label: 'Cerrar sesion', command: () => logout() },
     { label: user?.cliente_nombre || '', icon: 'pi pi-user' }
   ]
 
@@ -35,7 +35,7 @@ function Navbar() {
     {
       template: () => (
         <div className="flex items-center gap-2">
-          
+
           <span className="hidden sm:inline">{user?.cliente_nombre || ''}</span>
           <Avatar image={user?.avatar || logoLocal} shape="circle" size="large" />
         </div>
@@ -49,7 +49,8 @@ function Navbar() {
     <div className='bg-white p-2 flex items-center' >
 
       <Menubar
-        className={"justify-end h-16"}
+        start= {<img src="img/logo.png" alt="logo" style={{ width: "180px", height: "auto" }} />}
+        className={"justify-between h-16"}
         model={items}
         style={{
           fontSize: "1.2rem",

@@ -123,7 +123,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                         type="monotone"
                         dataKey="valor"
                         name={sensorNombre}
-                        stroke='var(--indigo-400)'
+                        stroke='var(--indigo-500)'
                         strokeWidth={3}
                         dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
                     />
@@ -159,20 +159,20 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
             const imgData = canvas.toDataURL('image/png')
             const doc = new jsPDF()
 
-            const logoData = await convertirImagen("img/logo-marca.png")
-            doc.addImage(logoData, 'PNG', 14, 5, 16, 10)
+            /* const logoData = await convertirImagen("img/logo-marca.png")
+            doc.addImage(logoData, 'PNG', 14, 5, 16, 10) */
 
             doc.setFont("helvetica", "normal")
-            doc.setFontSize(12)
+            doc.setFontSize(10)
             doc.setTextColor(50)
-            doc.text(`Señores`, 14, 25)
+            doc.text(`Tecnometry monitor-app`, 14, 20)
+            doc.text(`Señores`, 14, 29)
 
             doc.setFont("helvetica", "bold")
-            doc.text(user.cliente_nombre, doc.getTextWidth("Señores ") + 14, 25)
+            doc.text(user.cliente_nombre, doc.getTextWidth("Señores ") + 14, 29)
 
             doc.setFont("helvetica", "normal")
-
-            doc.text(`Este informe corresponde al registro de lecturas con intervalo de hora de ${graficoIntervaloHora}`, 14, 35)
+            doc.text(`Este informe corresponde al registro de lecturas de acuerdo al rango y hora seleccionada`, 14, 35)
 
             doc.setFont("helvetica", "normal")
             doc.text("Nombre:", 14, 45)
@@ -184,10 +184,9 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
             doc.text(`Serial: ${sensorIdentificador}`, 14, 50)
 
             doc.text(`Rango: ${sensorMin} ${sensorTipo === 1 ? "°C" : "%"} a ${sensorMax} ${sensorTipo === 1 ? "°C" : "%"}`, 14, 55)
-            doc.text(`Fecha: ${dayjs(graficoFecha).format("DD/MM/YYYY")}`, 14, 60)
+            doc.text(`Fecha: ${dayjs(graficoFecha).format("DD/MM/YYYY")} y rango de hora ${ graficoIntervaloHora}`, 14, 60)
 
             doc.addImage(imgData, 'PNG', 2, 65, 205, 70)
-
 
             const datos = consulta.map(row => [
                 sensorNombre,
@@ -200,10 +199,10 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
 
             autoTable(doc, {
                 margin: { top: 30, bottom: 35 },
-                startY: 130,
+                startY: 140,
                 head: [columnas],
                 body: datos,
-
+                styles: { fontSize: 8 },
                 didDrawPage: function (data) {
                     const pageHeight = doc.internal.pageSize.height
                     const pageWidth = doc.internal.pageSize.width
@@ -217,7 +216,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                         "Elaborado por: Tecnometry",
                         "Teléfono: 3028699819",
                         "Correo: admin@tecnometry.com",
-                        "https://tecnometry.com"
+                        "https://monitor-app.cloud"
                     ]
 
                     let y = pageHeight - 25
@@ -226,14 +225,11 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                         y += 5
                     })
 
-                    // Número de página alineado a la derecha
                     doc.text(`Página ${pageNumber}`, pageWidth - 40, pageHeight - 10)
-
-                    if (logoData) doc.addImage(logoData, 'PNG', 14, 5, 16, 10)
                     doc.setFont("helvetica", "bold")
-                    doc.setFontSize(18)
+                    doc.setFontSize(14)
                     doc.setTextColor(41, 128, 185)
-                    doc.text("Reporte Grafico - Fecha - Hora", 60, 15)
+                    doc.text("Reporte Grafico - Fecha - Hora", 14, 15)
                 }
             })
             doc.save("grafico-diario.pdf");

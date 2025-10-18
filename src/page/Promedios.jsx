@@ -4,7 +4,7 @@ import TablaPromedios from "../components/TablaPromedios"
 import { useAuth } from '../auth/AuthProvider'
 
 function Promedios() {
-    const { sensorId, sensorTipo, sensorNombre, sensorMin, sensorMax, promediosFechaInicio, setPromediosFechaInicio, promediosFechaFin, setPromediosFechaFin } = useSensor()
+    const { sensorId, sensorTipo, sensorNombre, sensorIdentificador, sensorMin, sensorMax, promediosFechaInicio, setPromediosFechaInicio, promediosFechaFin, setPromediosFechaFin } = useSensor()
     
     const baseUrl = import.meta.env.VITE_API_URL;
     
@@ -31,6 +31,7 @@ function Promedios() {
         <div>
             <TablaPromedios
                 consulta={consulta}
+                sensorIdentificador={sensorIdentificador}
                 promediosFechaInicio={promediosFechaInicio}
                 setPromediosFechaInicio={setPromediosFechaInicio}
                 promediosFechaFin={promediosFechaFin}

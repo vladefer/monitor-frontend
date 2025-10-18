@@ -4,7 +4,7 @@ import TablaLecturas from "../components/TablaLecturas"
 import { useAuth } from '../auth/AuthProvider'
 
 function Lecturas() {
-    const { sensorId, sensorMin, sensorMax, sensorTipo, sensorNombre, lecturasFechaInicio, lecturasFechaFin, setLecturasFechaInicio, setLecturasFechaFin } = useSensor()
+    const { sensorId, sensorMin, sensorMax, sensorTipo, sensorNombre, sensorIdentificador,lecturasFechaInicio, lecturasFechaFin, setLecturasFechaInicio, setLecturasFechaFin } = useSensor()
     const baseUrl = import.meta.env.VITE_API_URL;
     const { user } = useAuth()
 
@@ -30,6 +30,7 @@ function Lecturas() {
 
             <TablaLecturas
                 consulta={consulta}
+                sensorIdentificador={sensorIdentificador}
                 lecturasFechaInicio={lecturasFechaInicio}
                 setLecturasFechaInicio={setLecturasFechaInicio}
                 lecturasFechaFin={lecturasFechaFin}

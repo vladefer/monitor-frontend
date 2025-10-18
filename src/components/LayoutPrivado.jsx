@@ -9,7 +9,7 @@ export default function PrivateLayout() {
  <div className="flex min-h-screen w-full relative bg-gray-50">
 
   {/* Menú lateral fijo y sobre todo */}
-  <div className="hidden lg:block fixed top-0 left-0 h-screen z-[200]">
+  <div className="hidden lg:block fixed top-[66px] left-0  z-[200]">
     <NavegacionLateral />
   </div>
 

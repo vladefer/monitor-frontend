@@ -3,6 +3,9 @@ import { Calendar } from "primereact/calendar"
 import { Button } from "primereact/button"
 import { Card } from "primereact/card"
 import { SelectButton } from 'primereact/selectbutton'
+import { Checkbox } from 'primereact/checkbox'
+import { useState } from "react";
+
 
 // manejo de fechas
 import dayjs from "dayjs"
@@ -18,6 +21,11 @@ import "../assets/fonts/Lato-Regular-normal"
 import "../assets/fonts/Lato-Light-normal"
 
 function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, informeFechaFin, setInformeFechaFin, sensorNombre, sensorIdentificador, sensorMax, sensorMin, sensorTipo, refetch, isFetching, user, informeRangoHora, setInformeRangoHora }) {
+
+    const [minima, setMinima] = useState(true);
+    const [promedio, setPromedio] = useState(true);
+    const [maxima, setMaxima] = useState(true);
+
 
     //Rango de hora
     const rangoOpcion = [
@@ -99,30 +107,42 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                         strokeOpacity={0} // sin borde
                         fill="rgba(0, 153, 255, 0.2)" // azul muy suave, puedes personalizar
                     />
-                    <Line
-                        type="monotone"
-                        dataKey="max"
-                        stroke='var(--pink-400)'
-                        name="Máximo"
-                        strokeWidth={3}
-                        dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
-                    />
-                    <Line
-                        type="monotone"
-                        dataKey="promedio"
-                        stroke='var(--teal-500)'
-                        name="Promedio"
-                        strokeWidth={3}
-                        dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
-                    />
-                    <Line
-                        type="monotone"
-                        dataKey="min"
-                        stroke='var(--indigo-500)'
-                        name="Mínimo"
-                        strokeWidth={3}
-                        dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
-                    />
+
+                    {maxima && (
+                        <Line
+                            type="monotone"
+                            dataKey="max"
+                            stroke='var(--pink-500)'
+                            name="Máximo"
+                            strokeWidth={3}
+                            dot={{ r: 3, strokeWidth: 2, fill: "#ffffff" }}
+                        />
+
+                    )}
+
+
+                    {promedio && (
+                        <Line
+                            type="monotone"
+                            dataKey="promedio"
+                            stroke='var(--teal-600)'
+                            name="Promedio"
+                            strokeWidth={3}
+                            dot={{ r: 3, strokeWidth: 2, fill: "#ffffff" }}
+                        />
+                    )}
+
+                    {minima && (
+                        <Line
+                            type="monotone"
+                            dataKey="min"
+                            stroke='var(--indigo-600)'
+                            name="Mínimo"
+                            strokeWidth={3}
+                            dot={{ r: 3, strokeWidth: 2, fill: "#ffffff" }}
+                        />
+
+                    )}
 
                 </LineChart>
             </ResponsiveContainer>
@@ -172,16 +192,17 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
             const imgData = canvas.toDataURL('image/png')
             const doc = new jsPDF()
 
-            const logoData = await convertirImagen("img/logo-marca.png")
-            doc.addImage(logoData, 'PNG', 14, 5, 16, 10)
+            /*  const logoData = await convertirImagen("img/logo.png")
+             doc.addImage(logoData, 'PNG', 14, 8, 60, 10) */
 
             doc.setFont("helvetica", "normal")
-            doc.setFontSize(12)
+            doc.setFontSize(10)
             doc.setTextColor(50)
-            doc.text(`Señores`, 14, 25)
+            doc.text(`Tecnometry monitor-app`, 14, 20)
+            doc.text(`Señores`, 14, 29)
 
             doc.setFont("helvetica", "bold")
-            doc.text(user.cliente_nombre, doc.getTextWidth("Señores ") + 14, 25)
+            doc.text(user.cliente_nombre, doc.getTextWidth("Señores ") + 14, 29)
 
             doc.setFont("helvetica", "normal")
             doc.text(`Este informe corresponde al registro de maximas y minimas en rango de ${informeRangoHora} horas por dia.`, 14, 35)
@@ -217,7 +238,7 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                 startY: 140,
                 head: [columnas],
                 body: datos,
-
+                styles: { fontSize: 8 },
                 didDrawPage: function (data) {
                     const pageHeight = doc.internal.pageSize.height
                     const pageWidth = doc.internal.pageSize.width
@@ -231,7 +252,7 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                         "Elaborado por: Tecnometry",
                         "Teléfono: 3028699819",
                         "Correo: admin@tecnometry.com",
-                        "https://tecnometry.com"
+                        "https://monitor-app.cloud"
                     ]
 
                     let y = pageHeight - 25
@@ -241,12 +262,10 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                     })
 
                     doc.text(`Página ${pageNumber}`, pageWidth - 40, pageHeight - 10)
-
-                    if (logoData) doc.addImage(logoData, 'PNG', 14, 5, 16, 10)
                     doc.setFont("helvetica", "bold")
-                    doc.setFontSize(18)
+                    doc.setFontSize(14)
                     doc.setTextColor(41, 128, 185)
-                    doc.text("Reporte Grafico - Informe", 65, 15)
+                    doc.text("Reporte Grafico - Informe", 14, 15)
                 }
             })
             doc.save("grafico-informe.pdf")
@@ -299,7 +318,6 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                             style={{ height: '2.5rem' }}
                         />
                     </div>
-
                 </div>
 
 
@@ -310,16 +328,30 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                 >
 
 
-                    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                        <label style={{ color: "#4b4a4a", fontWeight: 500 }}>Fecha Fin</label>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                            <label style={{ color: "#4b4a4a", fontWeight: 500 }}>Rango</label>
+                            <SelectButton
+                                value={informeRangoHora}
+                                onChange={(e) => setInformeRangoHora(e.value)}
+                                options={rangoOpcion}
+                                optionLabel="label"
+                                style={{ height: '2.5rem', paddingBottom: "4rem" }}
+                            />
+                            
 
-                        <SelectButton
-                            value={informeRangoHora}
-                            onChange={(e) => setInformeRangoHora(e.value)}
-                            options={rangoOpcion}
-                            optionLabel="label"
-                            style={{ height: '2.5rem', paddingBottom: "4rem" }}
-                        />
+                        </div>
+
+                        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                            <label style={{ color: "#4b4a4a", fontWeight: 500 }}>Minima</label>
+                            <Checkbox onChange={e => setMinima(e.checked)} checked={minima} ></Checkbox>
+
+                            <label style={{ color: "#4b4a4a", fontWeight: 500 }}>Promedio</label>
+                            <Checkbox onChange={e => setPromedio(e.checked)} checked={promedio}></Checkbox>
+
+                            <label style={{ color: "#4b4a4a", fontWeight: 500 }}>Maxima</label>
+                            <Checkbox onChange={e => setMaxima(e.checked)} checked={maxima}></Checkbox>
+                        </div>
                     </div>
 
                     <div id="grafico-a-exportar" style={{}}>

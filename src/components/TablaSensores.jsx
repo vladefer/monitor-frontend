@@ -133,7 +133,7 @@ function TablaSensores({ consulta, setSensorId, setSensorNombre, setSensorIdenti
                     severity="primary"
                     loading={isFetching}
                     onClick={handleActualizar}
-                    style={{ height: '2.5rem' }}
+                    style={{ height: '2.5rem'}}
                 />
 
             </div>
@@ -151,7 +151,7 @@ function TablaSensores({ consulta, setSensorId, setSensorNombre, setSensorIdenti
                         selectionMode="single"
                         /* paginator rows={10} */
                         scrollable
-                        scrollHeight="30rem"
+                        scrollHeight="25rem"
                         selection={filaSeleccionada}
                         globalFilter={value}
                         onSelectionChange={(e) => setFilaSeleccionada(e.value)}
@@ -164,20 +164,14 @@ function TablaSensores({ consulta, setSensorId, setSensorNombre, setSensorIdenti
                             setSensorTipo(e.data.variable_id)
                             setSensorEstado(e.data.estado_notificacion)
                             setSensorUbicacion(e.data.ubicacion)
-
-
                         }}
                     >
                         <Column field="sensor_nombre" header="NOMBRE" sortable />
                         <Column field="sensor_id" header="IDENTIFICADOR" sortable />
+                        <Column field="onac" header="ONAC" sortable />
                         <Column field="ubicacion" header="UBICACION" sortable />
                         <Column field="ultima_lectura" header="LECTURA" sortable body={unidadMedida} />
-                        <Column
-                            field="fecha_ultima_lectura"
-                            header="FECHA"
-                            sortable
-                            body={(rowData) => dayjs(rowData.fecha_ultima_lectura).format("DD/MM/YYYY HH:mm:ss")}
-                        />
+                        <Column field="fecha_ultima_lectura" header="FECHA" sortable body={(rowData) => dayjs(rowData.fecha_ultima_lectura).format("DD/MM/YYYY HH:mm:ss")}/>
                         <Column field="variable_id" header="TIPO" sortable body={tipoSensor} />
                         <Column field="estado_lectura" header="ESTADO" sortable body={getEstadoLectura} />
                         <Column field="estado_notificacion" header="NOTIFICACION" sortable body={estadoString} />

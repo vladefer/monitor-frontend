@@ -112,9 +112,9 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
             type="monotone"
             dataKey="valor"
             name={sensorNombre}
-            stroke='var(--teal-700)'
-            strokeWidth={4}
-            dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
+            stroke='var(--indigo-600)'
+            strokeWidth={3}
+            dot={{ r: 0, strokeWidth: 2, fill: "#ffffff" }}
           />
 
         </LineChart>
