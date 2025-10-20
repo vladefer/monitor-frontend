@@ -1,110 +1,79 @@
-import { Menu } from "primereact/menu";
-import { Badge } from "primereact/badge";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 
-export default function NavegacionLateral() {
+export default function NavegacionLateral({ expanded = false }) {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
-    const itemRenderer = (item) => (
-        <div className="p-menuitem-content">
-            <a
-                className="p-menuitem-link"
-                onClick={item.command}
-                role="button"
-                tabIndex={0}
-                aria-label={item.label}
-            >
-                <i className={`${item.icon}`} style={{ fontSize: '1.3rem' }} />
-                <span className="ml-8 p-2">{item.label}</span>
-                {item.badge && (
-                    <Badge className="ml-auto" value={item.badge} severity="info" />
-                )}
-            </a>
-        </div>
-    );
-
     const items = [
-        {
-            label: "Home",
-            items: [
-                {
-                    label: "Dashboard",
-                    icon: "pi pi-home",
-                    command: () => navigate("/"),
-                    template: itemRenderer,
-                },
-                {
-                    label: "Lecturas",
-                    icon: "pi pi-database",
-                    command: () => navigate("/lecturas"),
-                    template: itemRenderer,
-                },
-                {
-                    label: "Promedios",
-                    icon: "pi pi-chart-line",
-                    command: () => navigate("/promedios"),
-                    template: itemRenderer,
-                },
-                {
-                    label: "Gráfico Diario",
-                    icon: "pi pi-calendar",
-                    command: () => navigate("/grafico"),
-                    template: itemRenderer,
-                },
-                {
-                    label: "Gráfico Informe",
-                    icon: "pi pi-chart-bar",
-                    command: () => navigate("/informes"),
-                    template: itemRenderer,
-                },
-                {
-                    label: "Contactos",
-                    icon: "pi pi-phone",
-                    command: () => navigate("/contactos"),
-                    template: itemRenderer,
-                },
-            ]
-        },
-
-                {
-            label: "Documentos",
-            items: [
-                {
-                    label: 'ONAC',
-                    icon: "pi pi-receipt",
-                    template: itemRenderer,
-
-                },  
-            ]
-        },
-
-        {
-            separator: true
-        },
-
-        {
-            label: "Usuario",
-            items: [
-                {
-                    label: 'Cerrar Sesion',
-                    icon: "pi pi-sign-out",
-                    command: () => logout(),
-                    template: itemRenderer,
-
-                },  
-            ]
-        },
-
+        { label: "Dashboard", icon: "pi pi-home", action: () => navigate("/") },
+        { label: "Lecturas", icon: "pi pi-database", action: () => navigate("/lecturas") },
+        { label: "Promedios", icon: "pi pi-chart-line", action: () => navigate("/promedios") },
+        { label: "Gráfico Diario", icon: "pi pi-calendar", action: () => navigate("/grafico") },
+        { label: "Gráfico Informe", icon: "pi pi-chart-bar", action: () => navigate("/informes") },
+        { label: "Contactos", icon: "pi pi-phone", action: () => navigate("/contactos") },
+        { label: "ONAC", icon: "pi pi-receipt" },
+        { separator: true },
+        { label: "Cerrar Sesión", icon: "pi pi-sign-out", action: logout },
     ];
 
     return (
-        <div >
-            <Menu
-                model={items}
-                style={{ fontSize: "1.2rem", width: "18rem", height: "100vh", }}
-            />
+        <div
+            className={`h-screen transition-all duration-300 ease-in-out ${expanded ? "w-[18rem]" : "w-[5rem]"
+                } overflow-hidden rounded-2xl bg-white/100 backdrop-blur-md border border-black/5 shadow-sm`}
+            style={{ willChange: "width" }}
+        >
+            <nav className="flex flex-col justify-between h-full py-4">
+
+                <div>
+                    {/* Logo superior */}
+                    <div className="flex items-center justify-center py-0">
+                        <img
+                            src="/img/logo-marca.png"
+                            alt="Logo"
+                            className="w-16"
+                        />
+                    </div>
+
+                    {items
+                        .filter((item) => item.label !== "Cerrar Sesión")
+                        .map((item, i) =>
+                            item.separator ? (
+                                <hr key={i} className="my-3 border-t border-gray-200" />
+                            ) : (
+                                <button
+                                    key={i}
+                                    onClick={item.action}
+                                    className={`flex items-center gap-10 px-6 py-8 text-gray-800 w-full text-left hover:bg-gray-100 transition-colors duration-200 cursor-pointer`}
+                                >
+                                    <i
+                                        className={`${item.icon} flex-shrink-0`}
+                                        style={{ fontSize: "1.3rem" }}
+                                    />
+                                    <span className="whitespace-nowrap overflow-hidden text-[1.2rem] font-medium transition-all duration-200">
+                                        {item.label}
+                                    </span>
+                                </button>
+                            )
+                        )}
+                </div>
+
+
+                <div className="">
+                    <button
+                        onClick={logout}
+                        className="flex items-center gap-10 px-5 py-8 text-gray-800 w-full text-left hover:bg-cyan-100 hover:text-black transition-colors duration-200 cursor-pointer"
+                    >
+                        <i
+                            className="pi pi-sign-out flex-shrink-0"
+                            style={{ fontSize: "1.3rem" }}
+                        />
+                        <span className="whitespace-nowrap overflow-hidden text-[1.2rem] font-medium transition-all duration-200">
+                            Cerrar Sesión
+                        </span>
+                    </button>
+                </div>
+            </nav>
         </div>
     );
 }
