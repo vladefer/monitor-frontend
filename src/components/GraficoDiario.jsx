@@ -68,7 +68,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
 
     // Mapear la Consulta para entregar Lecturas y fecha
     const datosRecharts = consulta.map(l => {
-        const horaLocal = dayjs(l.fecha).format("HH:mm")
+        const horaLocal = dayjs(l.fecha).format("YY-MM-DD HH:mm")
         return {
             hora: horaLocal,
             valor: l.lectura,

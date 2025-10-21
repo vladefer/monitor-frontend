@@ -143,7 +143,7 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
             style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "0rem", borderRadius: "1rem", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", border: "1px solid #e0e0e0", height: "auto" }}
             >
 
-            <div className="w-full h-92 sm:h-87">
+            <div className="w-full h-94 sm:h-87">
               {graficoRecharts}
             </div>
           </Card>
@@ -167,7 +167,7 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
               value={consultaLecturas}
               size="small"
               scrollable
-              scrollHeight="23rem"
+              scrollHeight="22rem"
             >
 
               
