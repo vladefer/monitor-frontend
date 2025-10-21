@@ -90,8 +90,8 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                     <YAxis
                         domain={[minValorConMargen, maxValorConMargen]}
                         tickFormatter={(value) => `${Number(value).toFixed(1)}${unidadMedida()}`}
-                        axisLine={false}
-                        tickLine={false}
+                        tickCount={10}
+                        tickMargin="10"
                     />
                     <Tooltip />
                     <Legend

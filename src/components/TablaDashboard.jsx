@@ -54,7 +54,7 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
 
   const datosRecharts = consultaLecturas.map(l => {
     return {
-      fecha: dayjs(l.fecha).format("HH:mm:ss"),
+      fecha: dayjs(l.fecha).format("YY-MM-DD HH:mm:ss"),
       valor: l.lectura,
     }
   })
@@ -75,7 +75,7 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
   // Crear grafico
   const graficoRecharts = (
     datosRecharts.length > 0 ? (
-      <ResponsiveContainer width="100%" height={270}>
+      <ResponsiveContainer width="100%" height="100%">
         <LineChart data={datosRecharts}>
           <CartesianGrid stroke="#eee" strokeDasharray="" />
           <XAxis
@@ -89,16 +89,10 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
           <YAxis
             domain={[minValorConMargen, maxValorConMargen]}
             tickFormatter={(value) => `${Number(value).toFixed(1)}${unidadMedida()}`}
-            axisLine={false}
-            tickLine={false}
+            tickCount={10}
+            tickMargin="10"
           />
           <Tooltip />
-          <Legend
-            wrapperStyle={{
-              fontFamily: 'Verdana',
-              color: '#394e60',
-            }}
-          />
 
           <ReferenceArea
             y1={sensorMin}
@@ -146,11 +140,10 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
 
             subTitle = {sensorNombre}
 
-            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "1rem", borderRadius: "1rem", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", border: "1px solid #e0e0e0", height: "35rem" }}>
+            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "0rem", borderRadius: "1rem", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", border: "1px solid #e0e0e0", height: "auto" }}
+            >
 
-            
-
-            <div style={{ width: "100%", margin: "0 auto" }}>
+            <div className="w-full h-92 sm:h-87">
               {graficoRecharts}
             </div>
           </Card>
@@ -168,7 +161,7 @@ function TablaDashboard({ consultaLecturas, sensorNombre, sensorTipo, sensorMin,
 
             subTitle = {sensorNombre}
 
-            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "1rem", borderRadius: "1rem", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", border: "1px solid #e0e0e0", height: "35rem" }}>
+            style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "0rem", borderRadius: "1rem", boxShadow: "0 2px 8px rgba(0,0,0,0.05)", border: "1px solid #e0e0e0", height: "auto" }}>
             <DataTable
               className="tabla-dashboard"
               value={consultaLecturas}

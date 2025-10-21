@@ -97,12 +97,17 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                     <CartesianGrid stroke="#eee" strokeDasharray="" />
                     <XAxis
                         dataKey="hora"
+                        angle={-45}
+                        textAnchor="end"
+                        height={80}
+                        tickSize="0"
+                        tickMargin="10"
                     />
                     <YAxis
                         domain={[minValorConMargen, maxValorConMargen]}
                         tickFormatter={(value) => `${Number(value).toFixed(1)}${unidadMedida()}`}
-                        axisLine={false}
-                        tickLine={false}
+                        tickCount={10}
+                        tickMargin="10"
                     />
                     <Tooltip />
                     <Legend
