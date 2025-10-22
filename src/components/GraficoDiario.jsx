@@ -1,10 +1,15 @@
 // primeReact
 import { Calendar } from "primereact/calendar"
-import { Dropdown } from 'primereact/dropdown'
 import { Button } from "primereact/button"
 import { Card } from "primereact/card"
-
-import { useEffect } from "react"
+import { Slider } from 'primereact/slider'
+import { useState } from "react"
+import { FaCalendarCheck } from "react-icons/fa";
+import { TbTemperatureSun } from "react-icons/tb"
+import { SiRainmeter } from "react-icons/si"
+import { FaCheckSquare } from "react-icons/fa";
+import { AiFillTag } from "react-icons/ai";
+import { TbClockHour4Filled } from "react-icons/tb";
 
 // manejo de fechas
 import dayjs from "dayjs"
@@ -17,7 +22,11 @@ import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
 import { autoTable } from 'jspdf-autotable'
 
-function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoIntervaloHora, setGraficoIntervaloHora, setGraficoFechaInicio, setGraficoFechaFin, sensorNombre, sensorMax, sensorMin, sensorTipo, refetch, isFetching, user, sensorIdentificador }) {
+function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoIntervaloHora, sensorNombre, sensorMax, sensorMin, sensorTipo, refetch, isFetching, user, sensorIdentificador }) {
+
+    const [seleccion, setSeleccion] = useState(0);
+
+    console.log(sensorTipo)
 
     // Agregar unidad de medida
     const unidadMedida = () => {
@@ -31,49 +40,43 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
         if (sensorTipo === 2) return `${sensorMin} H° a ${sensorMax} H°`
     }
 
-    // definir intervalos de horas
-    const horas = [
-        { label: "00:00 - 01:59", value: "00:00:00-01:59:59" },
-        { label: "02:00 - 03:59", value: "02:00:00-03:59:59" },
-        { label: "04:00 - 05:59", value: "04:00:00-05:59:59" },
-        { label: "06:00 - 07:59", value: "06:00:00-07:59:59" },
-        { label: "08:00 - 09:59", value: "08:00:00-09:59:59" },
-        { label: "10:00 - 11:59", value: "10:00:00-11:59:59" },
-        { label: "12:00 - 13:59", value: "12:00:00-13:59:59" },
-        { label: "14:00 - 15:59", value: "14:00:00-15:59:59" },
-        { label: "16:00 - 17:59", value: "16:00:00-17:59:59" },
-        { label: "18:00 - 19:59", value: "18:00:00-19:59:59" },
-        { label: "20:00 - 21:59", value: "20:00:00-21:59:59" },
-        { label: "22:00 - 23:59", value: "22:00:00-23:59:59" },
-    ]
-
-    // Convertir a zona horaria
-    const intervaloHora = (value) => {
-        const [horaInicio, horaFin] = value.split('-')
-
-        const inicioLocal = dayjs(`${graficoFecha} ${horaInicio}`, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
-        const finLocal = dayjs(`${graficoFecha} ${horaFin}`, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
-
-        setGraficoFechaInicio(inicioLocal);
-        setGraficoFechaFin(finLocal)
-        setGraficoIntervaloHora(value)
+    // Cambiar a tipo de sensor
+    const tipoSensor = (rowData) => {
+        if (rowData === 1) {
+            return (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: "1.2rem" }}>
+                    <TbTemperatureSun style={{ color: 'var(--teal-600)', fontSize: "2rem" }} />
+                    {/* Temperatura */}
+                </span>
+            )
+        }
+        if (rowData === 2) {
+            return (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: "1.2rem" }}>
+                    <SiRainmeter style={{ color: 'var(--indigo-700)', fontSize: "2rem" }}
+                    />
+                    {/* Humedad */}
+                </span>
+            )
+        }
     }
 
-    // actualizar cuando fecha u hora se cambian
-    useEffect(() => {
-        if (graficoFecha && graficoIntervaloHora) {
-            intervaloHora(graficoIntervaloHora)
-        }
-    }, [graficoFecha])
+    const datosRecharts = consulta.map(l => ({
+        fechaDayjs: dayjs(l.fecha),
+        horaStr: dayjs(l.fecha).format("YY-MM-DD HH:mm"),
+        horaNum: dayjs(l.fecha).hour(),
+        valor: l.lectura,
+    }))
 
-    // Mapear la Consulta para entregar Lecturas y fecha
-    const datosRecharts = consulta.map(l => {
-        const horaLocal = dayjs(l.fecha).format("YY-MM-DD HH:mm")
-        return {
-            hora: horaLocal,
-            valor: l.lectura,
-        }
+    const datosFiltrados = datosRecharts.filter((d) => {
+        const hora = d.horaNum
+        return hora >= seleccion && hora < seleccion + 2
     })
+
+    const datosFiltradosConLabel = datosFiltrados.map(d => ({
+        ...d,
+        hora: d.horaStr
+    }))
 
     // Mapea los valores de lectura
     const valoresLecturas = datosRecharts.map(d => d.valor);
@@ -91,9 +94,9 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
 
     // Crear grafico
     const graficoRecharts = (
-        datosRecharts.length > 0 ? (
-            <ResponsiveContainer width="100%" height={350}>
-                <LineChart data={datosRecharts}>
+        datosFiltrados.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={datosFiltradosConLabel}>
                     <CartesianGrid stroke="#eee" strokeDasharray="" />
                     <XAxis
                         dataKey="hora"
@@ -110,12 +113,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                         tickMargin="10"
                     />
                     <Tooltip />
-                    <Legend
-                        wrapperStyle={{
-                            fontFamily: 'Verdana',
-                            color: '#394e60',
-                        }}
-                    />
+
 
                     <ReferenceArea
                         y1={sensorMin}
@@ -128,9 +126,9 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                         type="monotone"
                         dataKey="valor"
                         name={sensorNombre}
-                        stroke='var(--indigo-500)'
-                        strokeWidth={3}
-                        dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
+                        stroke='var(--indigo-600)'
+                        strokeWidth={4}
+                        dot={{ r: 0, strokeWidth: 2, fill: "#ffffff" }}
                     />
 
                 </LineChart>
@@ -189,7 +187,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
             doc.text(`Serial: ${sensorIdentificador}`, 14, 50)
 
             doc.text(`Rango: ${sensorMin} ${sensorTipo === 1 ? "°C" : "%"} a ${sensorMax} ${sensorTipo === 1 ? "°C" : "%"}`, 14, 55)
-            doc.text(`Fecha: ${dayjs(graficoFecha).format("DD/MM/YYYY")} y rango de hora ${ graficoIntervaloHora}`, 14, 60)
+            doc.text(`Fecha: ${dayjs(graficoFecha).format("DD/MM/YYYY")} y rango de hora ${graficoIntervaloHora}`, 14, 60)
 
             doc.addImage(imgData, 'PNG', 2, 65, 205, 70)
 
@@ -243,31 +241,17 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-
             <div style={{ display: "flex", justifyContent: "space-between" }} >
 
                 <div>
-                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha</label>
-
+                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha de Lecturas</label>
                     <Calendar
                         value={graficoFecha ? dayjs(graficoFecha).toDate() : null}
                         onChange={(e) => setGraficoFecha(dayjs(e.value).format("YYYY-MM-DD"))}
                         placeholder="Seleccione Fecha"
                         showIcon
                         dateFormat="dd/mm/yy"
-                        style={{ height: '2.5rem', width: '15rem' }}
-                    />
-
-                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Hora</label>
-
-                    <Dropdown
-                        value={graficoIntervaloHora}
-                        options={horas}
-                        onChange={(e) => intervaloHora(e.value)}
-                        placeholder="Seleccione la hora"
-                        checkmark={true}
-                        highlightOnSelect={false}
-                        style={{ fontSize: '0.75rem', height: '2.5rem', width: '15rem', alignItems: 'center' }}
+                        style={{ height: '2.5rem', width: '18rem' }}
                     />
                 </div>
 
@@ -293,21 +277,75 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
             <Card
                 title="Grafico Diario"
                 subTitle={sensorNombre}
-                style={{ padding: "0rem 2rem" }}
+                style={{ padding: "1rem 6rem" }}
             >
-                <div id="grafico-a-exportar" style={{}}>
-                    <div style={{ width: "90%", margin: "0 auto" }}>
+
+                <div id="grafico-a-exportar" className="flex justify-center gap-6">
+                    <div className="w-[90%]  ">
                         {graficoRecharts}
                     </div>
                 </div>
 
+                <div className="flex justify-center">
+                    <div className="flex flex-col items-center gap-4">
+                        <label className="text-[#4b4a4a] text-[14px] font-medium">Rango de Hora</label>
 
-                <p>Serial: {sensorIdentificador}</p>
-                <p>Rangos del Sensor: {sensorMin} {unidadMedida()} a {sensorMax} {unidadMedida()}</p>
-                <p>Fecha: {dayjs(graficoFecha).format("DD/MM/YYYY")}</p>
-                <p>IntervaloHora: {graficoIntervaloHora}</p>
+                        <div className="flex items-center justify-between gap-8 w-[30rem] pb-6">
+                            <p>00:00</p>
+                            <Slider
+                                value={seleccion}
+                                onChange={(e) => setSeleccion(e.value)}
+                                min={0}
+                                max={22}
+                                step={1}
+                                className="w-80"
+                            />
+                            <p>24:00</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div className="flex justify-center gap-15 pl-16 pt-3">
+                    <div className="flex items-center gap-5 text-[14px]">
+                        <AiFillTag style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
+                        <p>{sensorIdentificador}</p>
+                    </div>
+
+                    <div className="flex items-center gap-5 text-[14px]">
+                        <FaCheckSquare style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
+                        <p>{sensorMin} {unidadMedida()} a {sensorMax} {unidadMedida()}</p>
+                    </div>
+
+                    <div className="flex items-center gap-5 text-[14px]">
+                        <FaCalendarCheck style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
+                        <p>{dayjs(graficoFecha).format("DD/MM/YYYY")}</p>
+                    </div>
+
+                    <div className="flex items-center gap-5 text-[14px]">
+                        <TbClockHour4Filled style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
+                        <p>{seleccion}:00 hasta {seleccion + 2}:00</p>
+                    </div>
+                </div>
+
+
+
 
             </Card>
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
     )
 }

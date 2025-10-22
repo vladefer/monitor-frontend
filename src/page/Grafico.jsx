@@ -9,15 +9,15 @@ function Grafico() {
   const { user } = useAuth()
 
   const fetchGrafico = async () => {
-        const res = await fetch(`${baseUrl}/sensors/${sensorId}/grafico?fechaInicio=${graficoFechaInicio}&fechaFin=${graficoFechaFin}`)
+        const res = await fetch(`${baseUrl}/sensors/${sensorId}/grafico?fecha=${graficoFecha}`)
         if (!res.ok) throw new Error("Error al cargar lecturas")
         return res.json()
     }
 
     const { data: consulta = [], refetch, isFetching } = useQuery({
-        queryKey: ["grafico", sensorId, graficoFechaInicio, graficoFechaFin],
+        queryKey: ["grafico", sensorId, graficoFecha],
         queryFn: fetchGrafico,
-        enabled: !!sensorId && !!graficoFechaInicio && !!graficoFechaFin,
+        enabled: !!sensorId && !!graficoFecha,
         staleTime: 1000 * 60 * 10, // cache 10 minutos
         refetchOnWindowFocus: false, 
         keepPreviousData: true, 

@@ -6,6 +6,13 @@ import { SelectButton } from 'primereact/selectbutton'
 import { Checkbox } from 'primereact/checkbox'
 import { useState } from "react";
 
+import { FaCalendarCheck } from "react-icons/fa";
+import { TbTemperatureSun } from "react-icons/tb"
+import { SiRainmeter } from "react-icons/si"
+import { FaCheckSquare } from "react-icons/fa";
+import { AiFillTag } from "react-icons/ai";
+import { TbClockHour4Filled } from "react-icons/tb";
+
 
 // manejo de fechas
 import dayjs from "dayjs"
@@ -76,7 +83,7 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
     // Crear grafico
     const graficoRecharts = (
         datosRecharts.length > 0 ? (
-            <ResponsiveContainer width="100%" height={350}>
+            <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={datosRecharts}>
                     <CartesianGrid stroke="#eee" strokeDasharray="" />
                     <XAxis
@@ -115,7 +122,7 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                             stroke='var(--pink-500)'
                             name="Máximo"
                             strokeWidth={3}
-                            dot={{ r: 3, strokeWidth: 2, fill: "#ffffff" }}
+                            dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
                         />
 
                     )}
@@ -128,7 +135,7 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                             stroke='var(--teal-600)'
                             name="Promedio"
                             strokeWidth={3}
-                            dot={{ r: 3, strokeWidth: 2, fill: "#ffffff" }}
+                            dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
                         />
                     )}
 
@@ -139,7 +146,7 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                             stroke='var(--indigo-600)'
                             name="Mínimo"
                             strokeWidth={3}
-                            dot={{ r: 3, strokeWidth: 2, fill: "#ffffff" }}
+                            dot={{ r: 2, strokeWidth: 2, fill: "#ffffff" }}
                         />
 
                     )}
@@ -338,7 +345,7 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                                 optionLabel="label"
                                 style={{ height: '2.5rem', paddingBottom: "4rem" }}
                             />
-                            
+
 
                         </div>
 
@@ -360,10 +367,27 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                         </div>
                     </div>
 
-                    <p>Serial: {sensorIdentificador}</p>
-                    <p>Rangos del Sensor: {sensorMin} {unidadMedida()} a {sensorMax} {unidadMedida()}</p>
-                    <p>Fecha: {dayjs(informeFechaInicio).format("DD/MM/YYYY")} hasta {dayjs(informeFechaFin).format("DD/MM/YYYY")} </p>
-                    <p>Rango Hora: {informeRangoHora} </p>
+                    <div className="flex justify-center gap-15 pl-16 pt-3">
+                        <div className="flex items-center gap-5 text-[14px]">
+                            <AiFillTag style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
+                            <p>{sensorIdentificador}</p>
+                        </div>
+
+                        <div className="flex items-center gap-5 text-[14px]">
+                            <FaCheckSquare style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
+                            <p>{sensorMin} {unidadMedida()} a {sensorMax} {unidadMedida()}</p>
+                        </div>
+
+                        <div className="flex items-center gap-5 text-[14px]">
+                            <FaCalendarCheck style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
+                            <p>Fecha: {dayjs(informeFechaInicio).format("DD/MM/YYYY")} hasta {dayjs(informeFechaFin).format("DD/MM/YYYY")} </p>
+                        </div>
+
+                        <div className="flex items-center gap-5 text-[14px]">
+                            <TbClockHour4Filled style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
+                            <p>Rango Hora: {informeRangoHora} </p>
+                        </div>
+                    </div>
 
                 </Card>
             </div>
