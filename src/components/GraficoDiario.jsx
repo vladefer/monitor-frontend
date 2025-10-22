@@ -4,12 +4,12 @@ import { Button } from "primereact/button"
 import { Card } from "primereact/card"
 import { Slider } from 'primereact/slider'
 import { useState } from "react"
-import { FaCalendarCheck } from "react-icons/fa";
+import { FaCalendarCheck } from "react-icons/fa"
 import { TbTemperatureSun } from "react-icons/tb"
 import { SiRainmeter } from "react-icons/si"
-import { FaCheckSquare } from "react-icons/fa";
+import { FaCheckSquare } from "react-icons/fa"
 import { AiFillTag } from "react-icons/ai";
-import { TbClockHour4Filled } from "react-icons/tb";
+import { TbClockHour4Filled } from "react-icons/tb"
 
 // manejo de fechas
 import dayjs from "dayjs"
@@ -22,11 +22,9 @@ import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
 import { autoTable } from 'jspdf-autotable'
 
-function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoIntervaloHora, sensorNombre, sensorMax, sensorMin, sensorTipo, refetch, isFetching, user, sensorIdentificador }) {
+function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, sensorNombre, sensorMax, sensorMin, sensorTipo, refetch, isFetching, user, sensorIdentificador }) {
 
     const [seleccion, setSeleccion] = useState(0);
-
-    console.log(sensorTipo)
 
     // Agregar unidad de medida
     const unidadMedida = () => {
@@ -37,28 +35,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
     // agregar rango
     const unirRango = () => {
         if (sensorTipo === 1) return `${sensorMin} C° a ${sensorMax} C°`
-        if (sensorTipo === 2) return `${sensorMin} H° a ${sensorMax} H°`
-    }
-
-    // Cambiar a tipo de sensor
-    const tipoSensor = (rowData) => {
-        if (rowData === 1) {
-            return (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: "1.2rem" }}>
-                    <TbTemperatureSun style={{ color: 'var(--teal-600)', fontSize: "2rem" }} />
-                    {/* Temperatura */}
-                </span>
-            )
-        }
-        if (rowData === 2) {
-            return (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: "1.2rem" }}>
-                    <SiRainmeter style={{ color: 'var(--indigo-700)', fontSize: "2rem" }}
-                    />
-                    {/* Humedad */}
-                </span>
-            )
-        }
+        if (sensorTipo === 2) return `${sensorMin} %° a ${sensorMax} %°`
     }
 
     const datosRecharts = consulta.map(l => ({
@@ -187,7 +164,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
             doc.text(`Serial: ${sensorIdentificador}`, 14, 50)
 
             doc.text(`Rango: ${sensorMin} ${sensorTipo === 1 ? "°C" : "%"} a ${sensorMax} ${sensorTipo === 1 ? "°C" : "%"}`, 14, 55)
-            doc.text(`Fecha: ${dayjs(graficoFecha).format("DD/MM/YYYY")} y rango de hora ${graficoIntervaloHora}`, 14, 60)
+            doc.text(`Fecha: ${dayjs(graficoFecha.hora).format("DD/MM/YYYY")} ${seleccion}:00 hasta ${seleccion + 2}:00 `, 14, 60)
 
             doc.addImage(imgData, 'PNG', 2, 65, 205, 70)
 
@@ -273,7 +250,6 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                 </div>
             </div>
 
-
             <Card
                 title="Grafico Diario"
                 subTitle={sensorNombre}
@@ -305,8 +281,6 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                     </div>
                 </div>
 
-
-
                 <div className="flex justify-center gap-15 pl-16 pt-3">
                     <div className="flex items-center gap-5 text-[14px]">
                         <AiFillTag style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
@@ -328,24 +302,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, graficoInterval
                         <p>{seleccion}:00 hasta {seleccion + 2}:00</p>
                     </div>
                 </div>
-
-
-
-
             </Card>
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
     )
 }
