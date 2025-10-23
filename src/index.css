@@ -24,6 +24,11 @@ body {
   background:  #f9f9fc
 }
 
+.tabla-sensores .p-datatable-tbody > tr > td {
+  white-space: nowrap;      /* Evita salto de línea */
+  overflow: hidden;         /* Oculta texto que sobrepasa el ancho */
+  text-overflow: ellipsis;  /* Agrega "..." al final del texto */
+}
 
 .espacio-boton .p-button .p-button-label {
   font-weight: 200 !important;
