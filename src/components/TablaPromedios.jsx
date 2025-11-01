@@ -117,29 +117,30 @@ function TablaPromedios({ consulta, promediosFechaInicio, setPromediosFechaInici
 
             <div style={{ display: "flex", justifyContent: "space-between" }} >
 
-                <div>
-                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha inicio</label>
+                <div className="flex flex-col lg:flex-row gap-1">
+                    <div>
+                        <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha inicio</label>
+                        <Calendar
+                            value={promediosFechaInicio ? dayjs(promediosFechaInicio).toDate() : null}
+                            showIcon
+                            onChange={(newValue) => setPromediosFechaInicio(dayjs(newValue.value).startOf("day").format("YYYY-MM-DD HH:mm:ss"))}
+                            placeholder="Seleccione Fecha"
+                            dateFormat="yy/mm/dd "
+                            style={{ height: '2.5rem', width: '15rem' }}
+                        />
+                    </div>
 
-                    <Calendar
-                        value={promediosFechaInicio ? dayjs(promediosFechaInicio).toDate() : null}
-                        showIcon
-                        onChange={(newValue) => setPromediosFechaInicio(dayjs(newValue.value).startOf("day").format("YYYY-MM-DD HH:mm:ss"))}
-                        placeholder="Seleccione Fecha"
-                        dateFormat="yy/mm/dd "
-                        style={{ height: '2.5rem', width: '15rem' }}
-                    />
-
-                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Fecha Fin</label>
-
-                    <Calendar
-                        value={promediosFechaFin ? dayjs(promediosFechaFin).toDate() : null}
-                        showIcon
-                        onChange={(newValue) => setPromediosFechaFin(dayjs(newValue.value).endOf("day").format("YYYY-MM-DD HH:mm:ss"))}
-                        placeholder="Seleccione Fecha"
-                        dateFormat="yy/mm/dd"
-                        style={{ height: '2.5rem', width: '15rem' }}
-                    />
-
+                    <div>
+                        <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Fecha Fin</label>
+                        <Calendar
+                            value={promediosFechaFin ? dayjs(promediosFechaFin).toDate() : null}
+                            showIcon
+                            onChange={(newValue) => setPromediosFechaFin(dayjs(newValue.value).endOf("day").format("YYYY-MM-DD HH:mm:ss"))}
+                            placeholder="Seleccione Fecha"
+                            dateFormat="yy/mm/dd"
+                            style={{ height: '2.5rem', width: '15rem' }}
+                        />
+                    </div>
                 </div>
 
                 <div style={{ display: "flex", gap: "1rem" }}>

@@ -72,7 +72,7 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, sensorNombre, s
     // Crear grafico
     const graficoRecharts = (
         datosFiltrados.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={datosFiltradosConLabel}>
                     <CartesianGrid stroke="#eee" strokeDasharray="" />
                     <XAxis
@@ -253,18 +253,18 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, sensorNombre, s
             <Card
                 title="Grafico Diario"
                 subTitle={sensorNombre}
-                style={{ padding: "1rem 6rem" }}
+                className="px-0 lg:px-20 "
             >
 
                 <div id="grafico-a-exportar" className="flex justify-center gap-6">
-                    <div className="w-[90%]  ">
+                    <div className="w-full h-80 sm:h-94">
                         {graficoRecharts}
                     </div>
                 </div>
 
                 <div className="flex justify-center">
                     <div className="flex flex-col items-center gap-4">
-                        <label className="text-[#4b4a4a] text-[14px] font-medium">Rango de Hora</label>
+                        <label className="text-[#4b4a4a] font-medium">Rango de Hora</label>
 
                         <div className="flex items-center justify-between gap-8 w-[30rem] pb-6">
                             <p>00:00</p>
@@ -281,23 +281,23 @@ function CrearGrafico({ consulta, graficoFecha, setGraficoFecha, sensorNombre, s
                     </div>
                 </div>
 
-                <div className="flex justify-center gap-15 pl-16 pt-3">
-                    <div className="flex items-center gap-5 text-[14px]">
+                <div className="flex flex-row flex-wrap items-center justify-center gap-4 pt-4">
+                    <div className="flex items-center gap-5">
                         <AiFillTag style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
                         <p>{sensorIdentificador}</p>
                     </div>
 
-                    <div className="flex items-center gap-5 text-[14px]">
+                    <div className="flex items-center gap-5">
                         <FaCheckSquare style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
                         <p>{sensorMin} {unidadMedida()} a {sensorMax} {unidadMedida()}</p>
                     </div>
 
-                    <div className="flex items-center gap-5 text-[14px]">
+                    <div className="flex items-center gap-5">
                         <FaCalendarCheck style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
                         <p>{dayjs(graficoFecha).format("DD/MM/YYYY")}</p>
                     </div>
 
-                    <div className="flex items-center gap-5 text-[14px]">
+                    <div className="flex items-center gap-5">
                         <TbClockHour4Filled style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
                         <p>{seleccion}:00 hasta {seleccion + 2}:00</p>
                     </div>

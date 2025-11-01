@@ -126,29 +126,30 @@ function TablaLecturas({ consulta, lecturasFechaInicio, setLecturasFechaInicio, 
 
             <div style={{ display: "flex", justifyContent: "space-between" }} >
 
-                <div >
-                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha inicio</label>
+                <div className="flex flex-col lg:flex-row gap-1">
+                    <div >
+                        <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha inicio</label>
+                        <Calendar
+                            value={lecturasFechaInicio ? dayjs(lecturasFechaInicio).toDate() : null}
+                            onChange={(e) => setLecturasFechaInicio(dayjs(e.value).startOf("day").format("YYYY-MM-DD HH:mm:ss"))}
+                            showIcon
+                            placeholder="Seleccione fecha"
+                            dateFormat="dd/mm/yy"
+                            style={{ height: '2.5rem', width: '15rem' }}
+                        />
+                    </div>
 
-                    <Calendar
-                        value={lecturasFechaInicio ? dayjs(lecturasFechaInicio).toDate() : null}
-                        onChange={(e) => setLecturasFechaInicio(dayjs(e.value).startOf("day").format("YYYY-MM-DD HH:mm:ss"))}
-                        showIcon
-                        placeholder="Seleccione fecha"
-                        dateFormat="dd/mm/yy"
-                        style={{ height: '2.5rem', width: '15rem' }}
-                    />
-
-                    <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Fecha Fin</label>
-
-                    <Calendar
-                        value={lecturasFechaFin ? dayjs(lecturasFechaFin).toDate() : null}
-                        onChange={(e) => setLecturasFechaFin(dayjs(e.value).endOf("day").format("YYYY-MM-DD HH:mm:ss"))}
-                        showIcon
-                        placeholder="seleccione fecha"
-                        dateFormat="dd/mm/yy"
-                        style={{ height: '2.5rem', width: '15rem' }}
-                    />
-
+                    <div >
+                        <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Fecha Fin</label>
+                        <Calendar
+                            value={lecturasFechaFin ? dayjs(lecturasFechaFin).toDate() : null}
+                            onChange={(e) => setLecturasFechaFin(dayjs(e.value).endOf("day").format("YYYY-MM-DD HH:mm:ss"))}
+                            showIcon
+                            placeholder="seleccione fecha"
+                            dateFormat="dd/mm/yy"
+                            style={{ height: '2.5rem', width: '15rem' }}
+                        />
+                    </div>
                 </div>
 
                 <div style={{ display: "flex", gap: "1rem" }}>

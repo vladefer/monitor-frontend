@@ -10,7 +10,7 @@ html {
 
 @media (max-width: 768px) {
   html {
-    font-size: 8px;
+    font-size: 10px;
   }
 }
 
@@ -22,12 +22,6 @@ body {
   margin: 0;
   padding: 0;
   background:  #f9f9fc
-}
-
-.tabla-sensores .p-datatable-tbody > tr > td {
-  white-space: nowrap;      /* Evita salto de línea */
-  overflow: hidden;         /* Oculta texto que sobrepasa el ancho */
-  text-overflow: ellipsis;  /* Agrega "..." al final del texto */
 }
 
 .espacio-boton .p-button .p-button-label {

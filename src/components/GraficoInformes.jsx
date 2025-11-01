@@ -83,7 +83,7 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
     // Crear grafico
     const graficoRecharts = (
         datosRecharts.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={datosRecharts}>
                     <CartesianGrid stroke="#eee" strokeDasharray="" />
                     <XAxis
@@ -285,28 +285,30 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
 
                 <div style={{ display: "flex", justifyContent: "space-between" }} >
 
-                    <div>
-                        <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha Inicio</label>
+                    <div className="flex flex-col lg:flex-row gap-1">
+                        <div>
+                            <label style={{ color: "#4b4a4a", fontWeight: 500, paddingRight: "1rem" }}>Fecha Inicio</label>
+                            <Calendar
+                                value={informeFechaInicio ? dayjs(informeFechaInicio).toDate() : null}
+                                showIcon
+                                onChange={(newValue) => setInformeFechaInicio(dayjs(newValue.value).startOf("day").format("YYYY-MM-DD HH:mm:ss"))}
+                                placeholder="Seleccione Fecha"
+                                dateFormat="dd/mm/yy "
+                                style={{ height: '2.5rem', width: '15rem' }}
+                            />
+                        </div>
 
-                        <Calendar
-                            value={informeFechaInicio ? dayjs(informeFechaInicio).toDate() : null}
-                            showIcon
-                            onChange={(newValue) => setInformeFechaInicio(dayjs(newValue.value).startOf("day").format("YYYY-MM-DD HH:mm:ss"))}
-                            placeholder="Seleccione Fecha"
-                            dateFormat="dd/mm/yy "
-                            style={{ height: '2.5rem', width: '15rem' }}
-                        />
-
-                        <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Fecha Fin</label>
-
-                        <Calendar
-                            value={informeFechaFin ? dayjs(informeFechaFin).toDate() : null}
-                            showIcon
-                            onChange={(newValue) => setInformeFechaFin(dayjs(newValue.value).endOf("day").format("YYYY-MM-DD HH:mm:ss"))}
-                            placeholder="Seleccione Fecha"
-                            dateFormat="dd/mm/yy"
-                            style={{ height: '2.5rem', width: '15rem' }}
-                        />
+                        <div>
+                            <label style={{ color: "#4b4a4a", fontWeight: 500, paddingLeft: "1rem", paddingRight: "1rem" }}>Fecha Fin</label>
+                            <Calendar
+                                value={informeFechaFin ? dayjs(informeFechaFin).toDate() : null}
+                                showIcon
+                                onChange={(newValue) => setInformeFechaFin(dayjs(newValue.value).endOf("day").format("YYYY-MM-DD HH:mm:ss"))}
+                                placeholder="Seleccione Fecha"
+                                dateFormat="dd/mm/yy"
+                                style={{ height: '2.5rem', width: '15rem' }}
+                            />
+                        </div>
                     </div>
 
 
@@ -331,11 +333,10 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                 <Card
                     title="Grafico Promedios"
                     subTitle={sensorNombre}
-                    style={{ padding: "0rem 2rem" }}
+                    className="px-0 lg:px-20 "
                 >
 
-
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                             <label style={{ color: "#4b4a4a", fontWeight: 500 }}>Rango</label>
                             <SelectButton
@@ -345,8 +346,6 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                                 optionLabel="label"
                                 style={{ height: '2.5rem', paddingBottom: "4rem" }}
                             />
-
-
                         </div>
 
                         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
@@ -362,28 +361,28 @@ function GraficoInformes({ consulta, informeFechaInicio, setInformeFechaInicio, 
                     </div>
 
                     <div id="grafico-a-exportar" style={{}}>
-                        <div style={{ width: "90%", margin: "0 auto" }}>
+                        <div className="w-full h-80 sm:h-100 pt-2">
                             {graficoRecharts}
                         </div>
                     </div>
 
-                    <div className="flex justify-center gap-15 pl-16 pt-3">
-                        <div className="flex items-center gap-5 text-[14px]">
+                    <div className="flex flex-row flex-wrap items-center justify-center gap-4 pt-4">
+                        <div className="flex items-center gap-5">
                             <AiFillTag style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
                             <p>{sensorIdentificador}</p>
                         </div>
 
-                        <div className="flex items-center gap-5 text-[14px]">
+                        <div className="flex items-center gap-5]">
                             <FaCheckSquare style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
                             <p>{sensorMin} {unidadMedida()} a {sensorMax} {unidadMedida()}</p>
                         </div>
 
-                        <div className="flex items-center gap-5 text-[14px]">
+                        <div className="flex items-center gap-5">
                             <FaCalendarCheck style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
                             <p>Fecha: {dayjs(informeFechaInicio).format("DD/MM/YYYY")} hasta {dayjs(informeFechaFin).format("DD/MM/YYYY")} </p>
                         </div>
 
-                        <div className="flex items-center gap-5 text-[14px]">
+                        <div className="flex items-center gap-5">
                             <TbClockHour4Filled style={{ color: 'var(--cyan-500)', fontSize: "2rem" }} />
                             <p>Rango Hora: {informeRangoHora} </p>
                         </div>

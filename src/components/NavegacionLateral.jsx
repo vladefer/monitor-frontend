@@ -50,13 +50,9 @@ export default function NavegacionLateral({ expanded = false }) {
 
 
             <div className="">
-               <button
-                  className="flex items-center gap-5 px-6 py-8 text-gray-800 w-full text-left hover:bg-cyan-100 hover:text-black transition-colors duration-200 cursor-pointer"
-               >
+               <button className="flex items-start gap-10 px-6 py-8 text-gray-800 w-full text-left hover:bg-cyan-100 hover:text-black transition-colors duration-200 cursor-pointer">
                   <i className="pi pi-user flex-shrink-0" style={{ fontSize: "1.3rem" }}/>
-                  <span className="overflow-hidden text-[1.2rem] font-medium transition-all duration-200">
-                     {user?.cliente_nombre}
-                  </span>
+                  <span className="overflow-hidden text-[1.2rem] font-medium transition-all duration-200"> Usuario </span>
                </button>
             </div>
          </nav>
